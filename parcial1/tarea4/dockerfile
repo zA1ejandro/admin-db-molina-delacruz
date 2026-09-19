@@ -1,0 +1,12 @@
+FROM mysql:8
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=tarea4
+
+VOLUME ["/var/lib/mysql"]
+
+COPY script.sql /docker-entrypoint-initdb.d/
+COPY escenario1.sql /docker-entrypoint-initdb.d/
+COPY escenario2.sql /docker-entrypoint-initdb.d/
+COPY escenario3.sql /docker-entrypoint-initdb.d/
+EXPOSE 3306
