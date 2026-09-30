@@ -1,0 +1,47 @@
+Table area_resguardo {
+  id_area int [pk, increment]
+  nombre varchar [not null, unique]
+  bioma varchar [not null]
+  capacidad int [not null]
+  cupo_disponible int [not null, check: `cupo_disponible >= 0 and cupo_disponible <= capacidad`]
+}
+
+Table especie {
+  id_especie int [pk, increment]
+  nombre varchar [not null, unique]
+  bioma varchar [not null]
+}
+
+Table animal {
+  id_animal int [pk, increment]
+  num_expediente varchar [not null, unique]
+  id_especie int [not null]
+  id_area_resguardo int [not null]
+  estado_salud varchar [not null, check: `estado_salud in ('Critico','Estable','En observacion','Recuperado')`]
+}
+
+Table movimiento {
+  id_movimiento int [pk, increment]
+  tipo_movimiento varchar [not null, check: `tipo_movimiento in ('Ingreso','Traslado interno','Traslado externo','Alta')`]
+  id_animal int [not null]
+  id_area_resguardo_anterior int
+  id_area_resguardo_nuevo int [not null,check: `id_area_resguardo_nuevo != id_area_resguardo_anterior`]
+  fecha_movimiento datetime [not null]
+  motivo varchar [not null]
+}
+
+Table registro_medico {
+  id_registro_medico int [pk, increment]
+  id_animal int [not null]
+  estado varchar [not null, check: `estado in ('Critico','Estable','En observacion','Recuperado')`]
+  diagnostico varchar [not null]
+  tratamiento varchar [not null]
+  fecha_registro datetime [not null]
+}
+
+Ref: animal.id_area_resguardo > area_resguardo.id_area
+Ref: animal.id_especie > especie.id_especie
+Ref: registro_medico.id_animal > animal.id_animal
+Ref: movimiento.id_animal > animal.id_animal
+Ref: movimiento.id_area_resguardo_anterior >? area_resguardo.id_area
+Ref: movimiento.id_area_resguardo_nuevo > area_resguardo.id_area

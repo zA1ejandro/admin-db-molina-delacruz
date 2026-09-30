@@ -1,0 +1,17 @@
+services:
+  mysql_db:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: mysql_refugio:1.0
+    container_name: mysql_refugio_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: SelvaViva
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
