@@ -1,0 +1,29 @@
+Table pago{
+  id_pago int [primary key, increment]
+  monto decimal [not null, check:`monto>0`]
+  estatus varchar [not null]
+}
+
+Table detalle_compra{
+  id_detalle_compra int [primary key, increment]
+  id_compra int [not null]
+  id_producto int [not null]
+  cantidad int [not null]
+}
+
+Table compra{
+  id_compra int [primary key, increment]
+  id_pago int
+}
+
+Table producto{
+  id_producto int [primary key, increment]
+  nombre_producto varchar [not null]
+  stock int [not null, check:`stock >=0`]
+  precio decimal [not null, check:`precio>0`]
+}
+
+
+Ref: compra.id_pago - pago.id_pago
+Ref: detalle_compra.id_compra > compra.id_compra
+Ref: detalle_compra.id_producto > producto.id_producto
